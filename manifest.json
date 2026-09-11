@@ -1,0 +1,18 @@
+{
+  "name": "Precios Perfectos · Moonlighter",
+  "short_name": "Moonlighter Precios",
+  "description": "Guía rápida de precios óptimos de venta para Moonlighter",
+  "start_url": "/moonlighter_prices_guide/",
+  "scope": "/moonlighter_prices_guide/",
+  "display": "standalone",
+  "background_color": "#0b0e14",
+  "theme_color": "#0b0e14",
+  "icons": [
+    {
+      "src": "icons/Iron_Bar.png",
+      "sizes": "92x92",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
