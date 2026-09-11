@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { USES, EQUIP_CATS } from '../data/items';
 import { ICON_MAP } from '../data/iconUrls';
+import { getItemUsageProfile } from '../data/itemSpecialInfo';
 
 function fmt(n) {
   return n.toLocaleString('es-ES');
@@ -14,6 +15,8 @@ export default function ItemCard({ item, isOpen, onToggle }) {
   const iconFile = ICON_MAP[item.en];
   const iconSrc = iconFile ? `${import.meta.env.BASE_URL}icons/${iconFile}` : null;
   const stackTotal = item.stack > 1 ? item.base * item.stack : null;
+  const profile = getItemUsageProfile(item, usedIn, isEquip);
+  const { special, hasCrafting, craftingList } = profile;
 
   const handleCopyBase = (e) => {
     e.stopPropagation();
@@ -52,7 +55,12 @@ export default function ItemCard({ item, isOpen, onToggle }) {
           </div>
           <div className="item-en">{item.en}</div>
           <div className="item-cat-tag">
-            {item.cat}{item.ng ? ' · NG+' : ''}
+            <span className="cat-text">{item.cat}{item.ng ? ' · NG+' : ''}</span>
+            {special.type === 'boss' && <span className="mini-tag boss">👑 Jefe</span>}
+            {special.type === 'enchantment' && <span className="mini-tag enchant">✨ Encantar</span>}
+            {special.type === 'potion' && <span className="mini-tag potion">🧪 Alquimia</span>}
+            {special.type === 'lore' && <span className="mini-tag lore">📜 Lore</span>}
+            {special.type === 'sell_only' && <span className="mini-tag sell">💎 Vender</span>}
           </div>
         </div>
         <div className={`item-chevron${isOpen ? ' rotated' : ''}`} aria-hidden="true">
@@ -103,24 +111,41 @@ export default function ItemCard({ item, isOpen, onToggle }) {
         </div>
       </div>
 
-      <div className="uses-panel" style={{ maxHeight: isOpen ? '300px' : '0' }}>
+      <div className="uses-panel" style={{ maxHeight: isOpen ? '650px' : '0' }}>
         <div className="uses-inner">
-          <div className="uses-label">Se usa para craftear</div>
-          {isEquip ? (
-            <div className="uses-equip">Es equipo listo para usar — no es un material de crafteo.</div>
-          ) : usedIn && usedIn.length > 0 ? (
-            <div className="uses-chips">
-              {usedIn.map(u => (
-                <span key={u} className="uses-chip">{u}</span>
-              ))}
+          <div className={`usage-box usage-${special.type}`}>
+            <div className="usage-header">
+              <span className="usage-icon">{special.icon}</span>
+              <span className="usage-badge">{special.badge}</span>
+              {special.title && <span className="usage-title">{special.title}</span>}
             </div>
-          ) : (
-            <div className="uses-none">Sin receta de crafteo confirmada — probablemente solo sirva para vender.</div>
+            <p className="usage-desc">{special.description}</p>
+            {special.potions && special.potions.length > 0 && (
+              <div className="usage-potions-block">
+                <div className="uses-subheading">🧪 Recetas de Pociones:</div>
+                <div className="uses-chips">
+                  {special.potions.map(p => (
+                    <span key={p} className="uses-chip potion-chip">🧪 {p}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {hasCrafting && (
+            <div className="crafting-block">
+              <div className="uses-subheading">🔨 Se usa para forjar equipo ({craftingList.length}):</div>
+              <div className="uses-chips">
+                {craftingList.map(u => (
+                  <span key={u} className="uses-chip">{u}</span>
+                ))}
+              </div>
+            </div>
           )}
         </div>
       </div>
 
-      <div className="tap-hint">{isOpen ? 'Toca para cerrar' : 'Toca para ver en qué se usa'}</div>
+      <div className="tap-hint">{isOpen ? 'Toca para cerrar' : 'Toca para ver usos y detalles'}</div>
     </article>
   );
 }

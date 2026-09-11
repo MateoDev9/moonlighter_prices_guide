@@ -502,12 +502,56 @@ h1 em {
 }
 
 .item-cat-tag {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
   font-size: 10.5px;
   color: var(--gold-dim);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: 600;
   margin-top: 3px;
+}
+
+.mini-tag {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  padding: 1px 6px;
+  border-radius: 4px;
+  line-height: 1.3;
+}
+
+.mini-tag.boss {
+  background: linear-gradient(135deg, #d97706, #dc2626);
+  color: #fff;
+  box-shadow: 0 1px 6px rgba(220, 38, 38, 0.35);
+}
+
+.mini-tag.enchant {
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  color: #fff;
+  box-shadow: 0 1px 6px rgba(124, 58, 237, 0.35);
+}
+
+.mini-tag.potion {
+  background: linear-gradient(135deg, #059669, #0d9488);
+  color: #fff;
+  box-shadow: 0 1px 6px rgba(5, 150, 105, 0.35);
+}
+
+.mini-tag.lore {
+  background: rgba(217, 119, 6, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(217, 119, 6, 0.35);
+}
+
+.mini-tag.sell {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--moon-dim);
+  border: 1px solid var(--line);
 }
 
 .item-chevron {
@@ -626,23 +670,163 @@ h1 em {
    ============================================================ */
 .uses-panel {
   overflow: hidden;
-  transition: max-height 0.25s ease;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   max-height: 0;
 }
 
 .uses-inner {
-  padding-top: 12px;
+  padding-top: 14px;
   border-top: 1px solid var(--line);
   margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.uses-label {
-  font-size: 10.5px;
+.usage-box {
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  background: var(--ink-800);
+}
+
+.usage-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.usage-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.usage-badge {
+  font-size: 10px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--moon-dim);
-  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.usage-title {
+  font-size: 13px;
   font-weight: 600;
+  color: var(--moon);
+}
+
+.usage-desc {
+  font-size: 12px;
+  color: var(--moon-dim);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Specific usage themes */
+.usage-boss {
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.12) 0%, rgba(217, 119, 6, 0.08) 100%), var(--ink-800);
+  border-color: rgba(220, 38, 38, 0.4);
+  box-shadow: 0 2px 12px rgba(220, 38, 38, 0.12);
+}
+.usage-boss .usage-badge {
+  background: linear-gradient(135deg, #d97706, #dc2626);
+  color: #fff;
+}
+.usage-boss .usage-title { color: #fca5a5; }
+
+.usage-enchantment {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.14) 0%, rgba(37, 99, 235, 0.08) 100%), var(--ink-800);
+  border-color: rgba(124, 58, 237, 0.4);
+}
+.usage-enchantment .usage-badge {
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  color: #fff;
+}
+.usage-enchantment .usage-title { color: #c4b5fd; }
+
+.usage-potion {
+  background: linear-gradient(135deg, rgba(5, 150, 105, 0.14) 0%, rgba(13, 148, 136, 0.08) 100%), var(--ink-800);
+  border-color: rgba(5, 150, 105, 0.4);
+}
+.usage-potion .usage-badge {
+  background: linear-gradient(135deg, #059669, #0d9488);
+  color: #fff;
+}
+.usage-potion .usage-title { color: #6ee7b7; }
+
+.usage-lore {
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.12) 0%, rgba(245, 158, 11, 0.05) 100%), var(--ink-800);
+  border-color: rgba(217, 119, 6, 0.35);
+}
+.usage-lore .usage-badge {
+  background: rgba(217, 119, 6, 0.25);
+  color: #fbbf24;
+  border: 1px solid rgba(217, 119, 6, 0.4);
+}
+.usage-lore .usage-title { color: #fde68a; }
+
+.usage-sell_only {
+  background: linear-gradient(135deg, rgba(224, 185, 92, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%), var(--ink-800);
+  border-color: rgba(224, 185, 92, 0.25);
+}
+.usage-sell_only .usage-badge {
+  background: rgba(224, 185, 92, 0.15);
+  color: var(--gold);
+}
+.usage-sell_only .usage-title { color: var(--gold-dim); }
+
+.usage-broken {
+  background: var(--ink-800);
+  border-color: var(--line-2);
+}
+.usage-broken .usage-badge {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--moon-dim);
+}
+
+.usage-equip, .usage-crafting, .usage-consumable {
+  background: var(--ink-800);
+  border-color: var(--line-2);
+}
+.usage-equip .usage-badge, .usage-crafting .usage-badge, .usage-consumable .usage-badge {
+  background: rgba(224, 185, 92, 0.15);
+  color: var(--gold);
+}
+
+.usage-potions-block {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.uses-subheading {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--moon-dim);
+  margin-bottom: 7px;
+}
+
+.potion-chip {
+  background: rgba(5, 150, 105, 0.16);
+  border-color: rgba(5, 150, 105, 0.45);
+  color: #a7f3d0;
+}
+
+.potion-chip:hover {
+  background: rgba(5, 150, 105, 0.28);
+  border-color: #10b981;
+}
+
+.crafting-block {
+  background: var(--ink-800);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 11px 13px;
 }
 
 .uses-chips {
@@ -656,7 +840,7 @@ h1 em {
   font-family: var(--font-body);
   padding: 4px 10px;
   border-radius: 999px;
-  background: var(--ink-800);
+  background: var(--ink-700);
   border: 1px solid var(--line-2);
   color: var(--moon);
   transition: border-color var(--transition), background var(--transition);
@@ -666,15 +850,6 @@ h1 em {
   background: var(--panel-3);
   border-color: var(--gold-dim);
 }
-
-.uses-none, .uses-equip {
-  font-size: 12.5px;
-  color: var(--moon-dim);
-  line-height: 1.5;
-  font-style: italic;
-}
-
-.uses-equip { font-style: normal; }
 
 /* ============================================================
    TAP HINT
