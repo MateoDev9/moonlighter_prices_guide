@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { USES, EQUIP_CATS } from '../data/items';
 import { ICON_MAP } from '../data/iconUrls';
 
@@ -6,11 +7,22 @@ function fmt(n) {
 }
 
 export default function ItemCard({ item, isOpen, onToggle }) {
+  const [copied, setCopied] = useState(false);
   const key = item.es + '|' + item.cat + '|' + item.ng;
   const isEquip = EQUIP_CATS.has(item.cat);
   const usedIn = USES[item.es];
   const iconFile = ICON_MAP[item.en];
   const iconSrc = iconFile ? `${import.meta.env.BASE_URL}icons/${iconFile}` : null;
+  const stackTotal = item.stack > 1 ? item.base * item.stack : null;
+
+  const handleCopyBase = (e) => {
+    e.stopPropagation();
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(item.base.toString());
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
+  };
 
   return (
     <article
@@ -43,7 +55,7 @@ export default function ItemCard({ item, isOpen, onToggle }) {
             {item.cat}{item.ng ? ' · NG+' : ''}
           </div>
         </div>
-        <div className={`item-chevron${isOpen ? ' rotated' : ''}`}>
+        <div className={`item-chevron${isOpen ? ' rotated' : ''}`} aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="14" height="14">
             <path d="m6 9 6 6 6-6"/>
           </svg>
@@ -51,18 +63,40 @@ export default function ItemCard({ item, isOpen, onToggle }) {
       </div>
 
       <div className="detail-grid">
+        <div
+          className={`detail-cell base${copied ? ' copied' : ''}`}
+          onClick={handleCopyBase}
+          role="button"
+          tabIndex={0}
+          title="Toca para copiar precio base"
+          onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && handleCopyBase(e)}
+        >
+          <div className="base-header">
+            <span className="k">{copied ? '¡Copiado al portapapeles!' : 'Precio Base · Perfecto'}</span>
+            <span className="copy-icon" aria-hidden="true">
+              {copied ? '✓' : '⧉'}
+            </span>
+          </div>
+          <div className="base-content">
+            <div className="v">{fmt(item.base)}</div>
+            {stackTotal && (
+              <div className="stack-calc">
+                Stack ×{item.stack}: <strong>{fmt(stackTotal)}</strong>
+              </div>
+            )}
+          </div>
+        </div>
+
         <div className="detail-cell low">
           <div className="k">Baja</div>
           <div className="v">{fmt(item.low)}</div>
         </div>
-        <div className="detail-cell base">
-          <div className="k">Base</div>
-          <div className="v">{fmt(item.base)}</div>
-        </div>
+
         <div className="detail-cell high">
           <div className="k">Alta</div>
           <div className="v">{fmt(item.high)}</div>
         </div>
+
         <div className="detail-cell mirror">
           <div className="k">Espejo</div>
           <div className="v">{fmt(item.mirror[0])}–{fmt(item.mirror[1])}</div>

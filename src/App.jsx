@@ -5,6 +5,7 @@ import FilterChips from './components/FilterChips';
 import SortBar from './components/SortBar';
 import ItemCard from './components/ItemCard';
 import EmptyState from './components/EmptyState';
+import ScrollToTop from './components/ScrollToTop';
 import { useItemFilter } from './hooks/useItemFilter';
 import './App.css';
 
@@ -23,15 +24,16 @@ export default function App() {
     <div className="wrap">
       <Header />
 
-      <SearchBar query={query} setQuery={setQuery} />
+      <div className="sticky-controls">
+        <SearchBar query={query} setQuery={setQuery} />
+        <FilterChips
+          categories={categories}
+          category={category}
+          setCategory={setCategory}
+        />
+      </div>
 
       <NgToggle ngMode={ngMode} setNgMode={setNgMode} />
-
-      <FilterChips
-        categories={categories}
-        category={category}
-        setCategory={setCategory}
-      />
 
       <SortBar count={filtered.length} sortBy={sortBy} setSortBy={setSortBy} />
 
@@ -57,6 +59,8 @@ export default function App() {
         Toca un objeto para ver en qué se usa · Espejo = valor de desecho en el Espejo de mercader ·{' '}
         <strong style={{ color: 'var(--gold-dim)' }}>×N</strong> junto al nombre = unidades por casilla de mochila
       </footer>
+
+      <ScrollToTop />
     </div>
   );
 }
