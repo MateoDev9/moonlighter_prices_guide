@@ -1,4 +1,5 @@
 import { USES, EQUIP_CATS } from '../data/items';
+import { ICON_MAP } from '../data/iconUrls';
 
 function fmt(n) {
   return n.toLocaleString('es-ES');
@@ -8,6 +9,8 @@ export default function ItemCard({ item, isOpen, onToggle }) {
   const key = item.es + '|' + item.cat + '|' + item.ng;
   const isEquip = EQUIP_CATS.has(item.cat);
   const usedIn = USES[item.es];
+  const iconFile = ICON_MAP[item.en];
+  const iconSrc = iconFile ? `${import.meta.env.BASE_URL}icons/${iconFile}` : null;
 
   return (
     <article
@@ -19,9 +22,20 @@ export default function ItemCard({ item, isOpen, onToggle }) {
       onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onToggle(key)}
     >
       <div className="item-top">
+        {iconSrc && (
+          <div className="item-icon-wrap" aria-hidden="true">
+            <img
+              src={iconSrc}
+              alt=""
+              className="item-icon"
+              loading="lazy"
+              onError={e => { e.currentTarget.style.display = 'none'; }}
+            />
+          </div>
+        )}
         <div className="item-names">
           <div className="item-es">
-            {item.es}
+            <span className="item-es-title">{item.es}</span>
             <span className="stack-badge">×{item.stack}</span>
           </div>
           <div className="item-en">{item.en}</div>
